@@ -1,3 +1,4 @@
+import os
 
 class Livro:
 
@@ -45,24 +46,28 @@ class Livro:
         return f'{self._titulo} | {self._autor} | {self._ano_publicacao} | {self._disponivel}'
     
     def emprestar(self):
-        self.disponivel = False
+      if self.disponivel:
+        self.alterar_status_disponivel()
+        print('Empréstimo realizado com sucesso')
 
     @classmethod
     def listar_livros(cls):
+        print('Lista de livros:')
         print(f"{'Titulo'.ljust(25)} | {'Autor'.ljust(25)} | {'Ano de publicação'.ljust(25)} | {'Status'}")
         for livro in cls.livros:
             print(f'{livro.titulo.ljust(25)} | {livro.autor.ljust(25)} | {str(livro.ano_publicacao).ljust(25)} | {livro.disponivel}')
+        print()
 
     @staticmethod
     def verificar_disponibilidade(ano):
-        print('Lista de livros do ano solicitado: ')
-        if ano != Livro.ano_publicacao:
-            return Livro.livros.__sizeof__
-        else:
-            Livro.listar_livros()
-            
-livro1 = Livro('primeiro', 'elder', 1984 )
-livro2 = Livro('segundo', 'jv', 1984 )
-livro3 = Livro('terceiro', 'sw', 1994 )
-Livro.listar_livros()
-Livro.verificar_disponibilidade(1984)
+        print('Lista de livros disponiveis:')
+        for livro in Livro.livros:
+            if livro.ano_publicacao == ano and livro.disponivel:
+                print(f'{livro.titulo.ljust(25)} | {livro.autor.ljust(25)} | {str(livro.ano_publicacao).ljust(25)} | {livro.disponivel}')
+                
+        print()
+
+    def alterar_status_disponivel(self):
+        self.disponivel = not self.disponivel
+
+
